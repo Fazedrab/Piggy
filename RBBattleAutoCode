@@ -1,0 +1,101 @@
+-- // Create By Ryzen#2261 \\ --
+
+local Translate = {
+	["Order"] = {
+		["I"] = "1",
+		["II"] = "2",
+		["III"] = "3",
+		["IV"] = "4",
+		["V"] = "5",
+	},
+	["Symbol"] = {
+		["I"] = "!",
+		["II"] = "@",
+		["III"] = "#",
+		["IV"] = "$",
+		["V"] = "%",
+		["VI"] = "^",
+		["VII"] = "&",
+		["VIII"] = "*",
+		["IX"] = "(",
+		["X"] = ")"
+	}
+}
+
+local UserInterface = game:GetObjects("rbxassetid://11776740857")[1]
+
+if game:GetService("CoreGui"):FindFirstChild(UserInterface.Name) then
+	game:GetService("CoreGui"):FindFirstChild(UserInterface.Name):Destroy()
+end
+
+UserInterface.Parent = game:GetService("CoreGui")
+
+local Debounce = false
+local AlreadyHaveCode = false
+
+local function GetArgs(String)
+	return string.split(String, " ")
+end
+
+UserInterface.Frame.Button.MouseButton1Down:Connect(function()
+	if Debounce and AlreadyHaveCode then
+		return
+	end
+
+	Debounce = true
+
+	if not game.workspace.LoadedMap.Part4:FindFirstChild("SafeRoom") then
+		UserInterface.Frame.Label.Text = "Map plant or Event trigger required!"
+		
+		wait(1)
+
+		UserInterface.Frame.Label.Text = "Code goes here"
+	else
+		local Code = ""
+
+		for i, v in pairs(game.workspace.LoadedMap.Part4.SafeRoom:GetChildren()) do
+			if v:IsA("Part") and v:FindFirstChild("SurfaceGui") and v.SurfaceGui:FindFirstChild("TextLabel") then
+				local Text = v.SurfaceGui.TextLabel.Text
+				local Leak = GetArgs(Text)
+		
+				local Order = Translate.Order[string.sub(Leak[1], 1)]
+				local Symbol = Translate.Symbol[string.sub(Leak[2], 1)]
+
+				if Code == nil then
+					Code = Order .. " = " .. Symbol 
+				else
+					Code = Code .. ", " .. Order .. " = " .. Symbol
+				end
+
+				print(Code)
+			end
+		end
+
+		UserInterface.Frame.Label.Text = Code
+
+		AlreadyHaveCode = true
+	end
+
+	wait(1)
+
+	Debounce = false
+end)
+
+game:GetService("RunService").Heartbeat:Connect(function()
+	if game.Workspace:FindFirstChild("GameFolder") and game.Workspace.GameFolder:FindFirstChild("Timer") then
+		if game.Workspace.GameFolder.Timer.Value == 0 and AlreadyHaveCode then
+			Debounce = true
+			AlreadyHaveCode = false
+
+			UserInterface.Frame.Label.Text = "Code expired!"
+
+			wait(1)
+
+			UserInterface.Frame.Label.Text = "Code goes here"
+
+			wait(1)
+
+			Debounce = false
+		end
+	end
+end)
