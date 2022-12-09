@@ -69,9 +69,6 @@ UserInterface.Frame.Button.MouseButton1Down:Connect(function()
 			end
 		end
 
-		print(Code)
-		print(game.Workspace.GameFolder.RBEnabled.Value)
-
 		UserInterface.Frame.Label.Text = Code
 
 		AlreadyHaveCode = true
