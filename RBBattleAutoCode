@@ -22,13 +22,63 @@ local Translate = {
 	}
 }
 
-local UserInterface = game:GetObjects("rbxassetid://11776740857")[1]
-
-if game:GetService("CoreGui"):FindFirstChild(UserInterface.Name) then
-	game:GetService("CoreGui"):FindFirstChild(UserInterface.Name):Destroy()
+if game:GetService("CoreGui"):FindFirstChild("IlIlIlIl") then
+	game.CoreGui.IlIlIlIl:Destroy()
 end
 
-UserInterface.Parent = game:GetService("CoreGui")
+local GUI = Instance.new("ScreenGui")
+GUI.Parent = game:GetService("CoreGui")
+GUI.Name = "IlIlIlIl"
+
+local Frame = Instance.new("Frame")
+Frame.Parent = GUI
+Frame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+Frame.Size = UDim2.new(0, 260, 0, 100)
+Frame.Position = UDim2.new(0.76, 0, 0.106, 0)
+
+local Button = Instance.new("TextButton")
+Button.Parent = Frame
+Button.BackgroundColor3 = Color3.fromRGB(65, 65, 65)
+Button.Name = "Button"
+Button.Font = Enum.Font.GothamBold
+Button.TextColor3 = Color3.fromRGB(240, 240, 240)
+Button.Text = "Code"
+Button.Size  = UDim2.new(0, 146, 0, 28)
+Button.Position = UDim2.new(0.064, 0, 0.63, 0)
+Button.TextSize = 18
+
+local Close = Instance.new("TextButton")
+Close.Parent = Frame
+Close.BackgroundColor3 = Color3.fromRGB(177, 0, 3)
+Close.Name = "Close"
+Close.Font = Enum.Font.GothamBold
+Close.TextColor3 = Color3.fromRGB(240, 240, 240)
+Close.Text = "Close"
+Close.Size  = UDim2.new(0, 71, 0, 28)
+Close.Position = UDim2.new(0.676, 0, 0.63, 0)
+Close.TextSize = 18
+
+local Label = Instance.new("TextLabel")
+Label.Parent = Frame
+Label.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+Label.Name = "Label"
+Label.Font = Enum.Font.GothamBold
+Label.TextColor3 = Color3.fromRGB(135, 135, 135)
+Label.Text = "Code goes here"
+Label.Size  = UDim2.new(0, 230, 0, 41)
+Label.Position = UDim2.new(0.065, 0, 0.15, 0)
+Label.TextSize = 15
+
+local Credit = Instance.new("TextLabel")
+Credit.Parent = Frame
+Credit.BackgroundTransparency = 1
+Credit.Name = "Credit"
+Credit.Font = Enum.Font.GothamBold
+Credit.TextColor3 = Color3.fromRGB(240, 240, 240)
+Credit.Text = "Subscribe to Ryzen"
+Credit.Size  = UDim2.new(0, 260, 0, 26)
+Credit.Position = UDim2.new(0, 0, -0.26, 0)
+Credit.TextSize = 15
 
 local Debounce = false
 local AlreadyHaveCode = false
@@ -37,7 +87,7 @@ local function GetArgs(String)
 	return string.split(String, " ")
 end
 
-UserInterface.Frame.Button.MouseButton1Down:Connect(function()
+Button.MouseButton1Down:Connect(function()
 	if Debounce and AlreadyHaveCode then
 		return
 	end
@@ -45,11 +95,11 @@ UserInterface.Frame.Button.MouseButton1Down:Connect(function()
 	Debounce = true
 
 	if not game.workspace.LoadedMap.Part4:FindFirstChild("SafeRoom") then
-		UserInterface.Frame.Label.Text = "Map plant or Event trigger required!"
-		
+		Label.Text = "Map plant or Event trigger required!"
+
 		wait(1)
 
-		UserInterface.Frame.Label.Text = "Code goes here"
+		Label.Text = "Code goes here"
 	else
 		local Code = nil
 
@@ -57,7 +107,7 @@ UserInterface.Frame.Button.MouseButton1Down:Connect(function()
 			if v:IsA("Part") and v:FindFirstChild("SurfaceGui") and v.SurfaceGui:FindFirstChild("TextLabel") then
 				local Text = v.SurfaceGui.TextLabel.Text
 				local Leak = GetArgs(Text)
-		
+
 				local Order = Translate.Order[string.sub(Leak[1], 1)]
 				local Symbol = Translate.Symbol[string.sub(Leak[2], 1)]
 
@@ -69,7 +119,7 @@ UserInterface.Frame.Button.MouseButton1Down:Connect(function()
 			end
 		end
 
-		UserInterface.Frame.Label.Text = Code
+		Label.Text = Code
 
 		AlreadyHaveCode = true
 	end
@@ -79,16 +129,22 @@ UserInterface.Frame.Button.MouseButton1Down:Connect(function()
 	Debounce = false
 end)
 
+Close.MouseButton1Down:Connect(function()
+	Debounce = true
+	AlreadyHaveCode = false
+	GUI:Destroy()
+end)
+
 game:GetService("RunService").Heartbeat:Connect(function()
 	if not game.workspace:FindFirstChild("Plant") and AlreadyHaveCode then
 		Debounce = true
 		AlreadyHaveCode = false
 
-		UserInterface.Frame.Label.Text = "Code expired!"
+		Label.Text = "Code expired!"
 
 		wait(1)
 
-		UserInterface.Frame.Label.Text = "Code goes here"
+		Label.Text = "Code goes here"
 
 		wait(1)
 
