@@ -104,9 +104,9 @@ Button.MouseButton1Down:Connect(function()
 
 	if not game.workspace:FindFirstChild("LoadedMap") then
 		FailedMsg()
-	elseif game.workspace.LoadedMap:FindFirstChild("Part4") then
+	elseif not game.workspace.LoadedMap:FindFirstChild("Part4") then
 		FailedMsg()
-	elseif game.workspace.LoadedMap.Part4:FindFirstChild("SafeRoom") then
+	elseif not game.workspace.LoadedMap.Part4:FindFirstChild("SafeRoom") then
 		FailedMsg()
 	else
 		local Code = nil
