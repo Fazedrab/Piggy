@@ -87,6 +87,14 @@ local function GetArgs(String)
 	return string.split(String, " ")
 end
 
+local function FailedMsg()
+	Label.Text = "Map plant or Event trigger required!"
+
+	wait(1)
+
+	Label.Text = "Code goes here"
+end
+
 Button.MouseButton1Down:Connect(function()
 	if Debounce and AlreadyHaveCode then
 		return
@@ -94,12 +102,12 @@ Button.MouseButton1Down:Connect(function()
 
 	Debounce = true
 
-	if not game.workspace.LoadedMap.Part4:FindFirstChild("SafeRoom") then
-		Label.Text = "Map plant or Event trigger required!"
-
-		wait(1)
-
-		Label.Text = "Code goes here"
+	if not game.workspace:FindFirstChild("LoadedMap") then
+		FailedMsg()
+	elseif game.workspace.LoadedMap:FindFirstChild("Part4") then
+		FailedMsg()
+	elseif game.workspace.LoadedMap.Part4:FindFirstChild("SafeRoom") then
+		FailedMsg()
 	else
 		local Code = nil
 
